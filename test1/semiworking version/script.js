@@ -1,5 +1,40 @@
 var searchField = $(".searchField");
-var queryParams={};
+var queryParams={
+    locations1:{
+
+    },
+    location2:{
+
+    }
+    
+};
+
+if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(function(position){  //Asynchronous like an ajax call.
+        //console.log(position);
+        queryParams.latitude = position.coords.latitude;
+        queryParams.longitude = position.coords.longitude;
+
+        initMap();
+    });
+}else{
+    alert("Geolocation not supported by your browser");
+}
+
+
+var map;
+function initMap() {
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: queryParams.latitude, lng: queryParams.longitude},
+    zoom: 8
+  });
+  
+  var marker = new google.maps.Marker({
+    position: firstpin,  //queryParams.location1.
+    map: map,
+    title: 'Hello World!'
+  });
+}
 
 
 $(".searchLocale").on("click", function(){
@@ -27,17 +62,18 @@ $(".showOptions").on("click", function(){
         // "appid": "CHxZJb0CdGwHtBXXsf_zhyCO559XQ5cDfBGbEHxLM77vW2zz4gwxPOfbS2WNowgtgZrWBg_4-2hQoKn-B_hlh_z8cNJgFXZkEZ635hT0JYCse5mei4tFMuZI8QBtXnYx", 
         "term": "vegan",
         //"location": searchTerm,
-        "latitude":"",
-        "longitude":"",
     };
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){  //Asynchronous like an ajax call.
-            //console.log(position);
-            
-            queryParams.latitude = position.coords.latitude;
-            queryParams.longitude = position.coords.longitude;
-            
-            lookupInfo();
+            /*
+            for (var i = 0; i < 5; i++){
+                queryParams.location.latitude = position.businesses[i].coordinates.latitude;
+                queryParams.location.longitude = position.businesses[i].coordinates.latitude;
+            }
+            console.log(queryParams);
+            //lookupInfo();
+            //initMap2();
+            */
         });
     }else{
         alert("Geolocation not supported by your browser");
@@ -46,47 +82,6 @@ $(".showOptions").on("click", function(){
     //lookupInfo();
 
 })
-
-
-  var currentLocation= {
-      long: -87.889320,
-      lat: 42.042301
-  }
-
-  var testLocation1 = {
-      long: -87.863319,
-      lat: 41.991890
-  }
-  
-  var testLocation2= {
-    long: -87.980461,
-      lat: 42.082981 
-  }
-
-  function initMap() {
-    var myLatLng = {lat: -34.397, lng: 150.644};
-    var firstpin = {lat: testLocation1.lat, lng: testLocation1.long}
-    var secondpin= {lat: testLocation2.lat, lng: testLocation2.long}
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
-      center: myLatLng
-    });
-    
-    var marker = new google.maps.Marker({
-      position: firstpin,
-      map: map,
-      title: 'Hello World!'
-    });
-    /*
-    var marker = new google.maps.Marker({
-      position: secondpin,
-      map: map,
-      title: 'Hello World!'
-    });*/
-  }      
-
-
 
 function lookupInfo(){
     var queryURL = "https://api.yelp.com/v3/businesses/search";
@@ -104,21 +99,3 @@ function lookupInfo(){
     })
 
 }
-//lookupInfo();
-/*
-$(document).ready(function(){
-    var userPosition = 
-    {
-    lat: '',
-    lon: ''};
-    if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition(function(position){
-            userPosition.lat = position.coords.latitude;
-            userPosition.lon = position.coords.longitude;
-            console.log(userPosition.lat); //This shows me the latitude
-
-        })
-    }else{
-        alert("Geolocation not supported by your browser");
-    }
-}*/
