@@ -1,6 +1,3 @@
-//TWo buttons, one allows user to search for vegan options given a search term.
-//button 2 finds the vegan options around the user' current location.  
-
 var searchField = $(".searchField");
 var queryParams={};
 
@@ -36,10 +33,11 @@ $(".showOptions").on("click", function(){
     if(navigator.geolocation){
         navigator.geolocation.getCurrentPosition(function(position){  //Asynchronous like an ajax call.
             //console.log(position);
+            
             queryParams.latitude = position.coords.latitude;
             queryParams.longitude = position.coords.longitude;
-            console.log(queryParams.latitude);
-            console.log(queryParams.longitude);
+            //console.log(queryParams.latitude);
+            //console.log(queryParams.longitude);
             lookupInfo();
         });
     }else{
